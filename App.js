@@ -1,18 +1,24 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, ScrollView, View } from 'react-native';
 import Title from './components/Title';
+import Footer from './components/Footer';
+import TextInput from './components/Input';
+import styled from 'styled-components';
+
+const Wrapper = styled.View`
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+`;
 
 const App = () => (
-  <View>
+  <Wrapper>
     <Title />
-    <Text>Hello</Text>
-  </View>
+    <ScrollView>
+      <TextInput />
+    </ScrollView>
+    <Footer />
+  </Wrapper>
 );
-// <View>
-//   <Title />
-//   <View>
-//     <Text>Hello!</Text>
-//   </View>
-// </View>
 
 export default App;
