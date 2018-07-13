@@ -18,7 +18,6 @@ export default class Input extends Component {
   };
 
   render() {
-    console.log('hello');
     return (
       <TodoInput
         onChangeText={this.handleChangeText}

@@ -1,4 +1,5 @@
 import React from 'react';
+import { ApolloConsumer } from 'react-apollo';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import styled from 'styled-components';
 import { CheckBox } from 'react-native-elements';
@@ -52,6 +53,13 @@ const renderItem = ({ item }) => (
   </ItemWrapper>
 );
 
-const TodoList = () => <FlatList data={todos} renderItem={renderItem} keyExtractor={extractKey} />;
+const TodoList = () => (
+  <ApolloConsumer>
+    {(client) => {
+      console.log({ client });
+      return <FlatList data={todos} renderItem={renderItem} keyExtractor={extractKey} />;
+    }}
+  </ApolloConsumer>
+);
 
 export default TodoList;
