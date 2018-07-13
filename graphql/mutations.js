@@ -17,3 +17,9 @@ export const TOGGLE_IS_COMPLETED = gql`
     toggleIsCompleted(id: $id) @client
   }
 `;
+
+export const REMOVE_ALL_TODOS = gql`
+  mutation RemoveAllTodos {
+    removeAllTodos @client
+  }
+`;

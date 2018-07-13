@@ -20,7 +20,7 @@ export const resolvers = {
       };
 
       const updatedTodos = { todos: previous.todos.concat([newTodo]) };
-      console.log(updatedTodos);
+
       cache.writeData({ data: updatedTodos });
 
       return newTodo;
@@ -38,13 +38,18 @@ export const resolvers = {
 
       return { success: true };
     },
+    removeAllTodos: (_, __, { cache }) => {
+      cache.writeData({ data: { todos: [] } });
+
+      return { success: true };
+    },
     toggleIsCompleted: (_, { id }, { cache }) => {
       const { todos } = cache.readQuery({ query: GET_TODOS });
 
       const updatedTodos = todos.map(
         (todo) => (todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo)
       );
-      console.log(updatedTodos);
+
       cache.writeData({ data: { todos: updatedTodos } });
 
       return { success: true };

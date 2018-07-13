@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { Mutation } from 'react-apollo';
 import styled from 'styled-components';
+
+import { REMOVE_ALL_TODOS } from '../graphql/mutations';
 
 const Wrapper = styled.View`
   height: 70px;
@@ -15,12 +18,14 @@ const FooterText = styled.Text`
   color: red;
 `;
 
-export default class Footer extends Component {
-  render() {
-    return (
-      <Wrapper>
-        <FooterText>Remove completed items</FooterText>
-      </Wrapper>
-    );
-  }
-}
+const Footer = () => (
+  <Wrapper>
+    <Mutation mutation={REMOVE_ALL_TODOS}>
+      {(removeAllTodos) => (
+        <FooterText onPress={() => removeAllTodos()}>Remove completed items</FooterText>
+      )}
+    </Mutation>
+  </Wrapper>
+);
+
+export default Footer;
