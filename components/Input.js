@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
+import { Mutation } from 'react-apollo';
 import { TextInput, View, StyleSheet } from 'react-native';
 import styled from 'styled-components';
+
+import { ADD_TODO } from '../graphql/mutations';
 
 const TodoInput = styled.TextInput`
   font-size: 18px;
@@ -17,13 +20,24 @@ export default class Input extends Component {
     this.setState({ text });
   };
 
+  handleSubmit = (addTodo) => () => {
+    addTodo();
+
+    this.setState({ text: '' });
+  };
+
   render() {
     return (
-      <TodoInput
-        onChangeText={this.handleChangeText}
-        value={this.state.text}
-        placeholder="Enter a todo"
-      />
+      <Mutation mutation={ADD_TODO} variables={{ text: this.state.text }}>
+        {(addTodo) => (
+          <TodoInput
+            onChangeText={this.handleChangeText}
+            value={this.state.text}
+            placeholder="Enter a todo"
+            onSubmitEditing={this.handleSubmit(addTodo)}
+          />
+        )}
+      </Mutation>
     );
   }
 }

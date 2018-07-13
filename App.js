@@ -2,6 +2,7 @@ import React from 'react';
 import ApolloClient from 'apollo-boost';
 import styled from 'styled-components';
 import { StyleSheet, Text, ScrollView, View } from 'react-native';
+import { defaults, resolvers } from './graphql';
 import { ApolloProvider } from 'react-apollo';
 
 import Title from './components/Title';
@@ -9,21 +10,10 @@ import Footer from './components/Footer';
 import TextInput from './components/Input';
 import TodoList from './components/TodoList';
 
-const defaults = {
-  todos: {
-    __typename: 'Todos',
-    all: [
-      { __typename: 'todo', id: 0, text: 'Finish tutorial' },
-      { __typename: 'todo', id: 1, text: 'Meal prep' },
-      { __typename: 'todo', id: 2, text: 'Call my mother' },
-      { __typename: 'todo', id: 3, text: 'Push code' }
-    ]
-  }
-};
-
 const client = new ApolloClient({
   clientState: {
-    defaults
+    defaults,
+    resolvers
   }
 });
 

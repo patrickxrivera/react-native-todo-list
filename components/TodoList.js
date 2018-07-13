@@ -1,8 +1,11 @@
 import React from 'react';
-import { ApolloConsumer } from 'react-apollo';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
 import styled from 'styled-components';
+import { Query } from 'react-apollo';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
+
+import AppText from './shared/AppText';
+import { GET_TODOS } from '../graphql/queries';
 
 const ItemWrapper = styled.View`
   border-bottom-color: lightgrey;
@@ -34,18 +37,11 @@ const styles = StyleSheet.create({
   }
 });
 
-const todos = [
-  { id: 0, text: 'Finish tutorial' },
-  { id: 1, text: 'Meal prep' },
-  { id: 2, text: 'Call my mother' },
-  { id: 3, text: 'Push code' }
-];
-
 const extractKey = ({ id }) => id.toString();
 
 const renderItem = ({ item }) => (
   <ItemWrapper>
-    <Text>{item.text}</Text>
+    <AppText>{item.text}</AppText>
     <ActionWrapper>
       <CheckBox containerStyle={styles.containerStyle} />
       <RemoveIcon>X</RemoveIcon>
@@ -54,12 +50,11 @@ const renderItem = ({ item }) => (
 );
 
 const TodoList = () => (
-  <ApolloConsumer>
-    {(client) => {
-      console.log({ client });
-      return <FlatList data={todos} renderItem={renderItem} keyExtractor={extractKey} />;
-    }}
-  </ApolloConsumer>
+  <Query query={GET_TODOS}>
+    {({ data: { todos } }) => (
+      <FlatList data={todos} renderItem={renderItem} keyExtractor={extractKey} />
+    )}
+  </Query>
 );
 
 export default TodoList;
