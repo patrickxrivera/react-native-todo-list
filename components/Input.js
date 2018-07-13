@@ -9,7 +9,22 @@ const TodoInput = styled.TextInput`
 `;
 
 export default class Input extends Component {
+  state = {
+    text: ''
+  };
+
+  handleChangeText = (text) => {
+    this.setState({ text });
+  };
+
   render() {
-    return <TodoInput placeholder="Enter a todo" />;
+    console.log('hello');
+    return (
+      <TodoInput
+        onChangeText={this.handleChangeText}
+        value={this.state.text}
+        placeholder="Enter a todo"
+      />
+    );
   }
 }
