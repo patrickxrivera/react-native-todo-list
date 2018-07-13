@@ -1,15 +1,10 @@
 import { GET_TODOS } from './queries';
 
 // for demo purposes
-const newTodoId = 4;
+const newTodoId = 0;
 
 export const defaults = {
-  todos: [
-    { __typename: 'Todo', id: 0, text: 'Finish tutorial' },
-    { __typename: 'Todo', id: 1, text: 'Meal prep' },
-    { __typename: 'Todo', id: 2, text: 'Call my mother' },
-    { __typename: 'Todo', id: 3, text: 'Push code' }
-  ]
+  todos: []
 };
 
 export const resolvers = {
@@ -17,11 +12,42 @@ export const resolvers = {
     addTodo: (_, { text }, { cache }) => {
       const previous = cache.readQuery({ query: GET_TODOS });
 
-      const newTodo = { id: newTodoId++, text, __typename: 'Todo' };
-      const data = { todos: previous.todos.concat([newTodo]) };
+      const newTodo = {
+        id: newTodoId++,
+        isCompleted: false,
+        __typename: 'Todo',
+        text
+      };
 
-      cache.writeQuery({ query: GET_TODOS, data });
+      const updatedTodos = { todos: previous.todos.concat([newTodo]) };
+      console.log(updatedTodos);
+      cache.writeData({ data: updatedTodos });
+
       return newTodo;
+    },
+    removeTodo: (_, { id }, { cache }) => {
+      const { todos } = cache.readQuery({ query: GET_TODOS });
+
+      const updatedTodos = todos.filter((todo) => todo.id !== id);
+
+      cache.writeData({
+        data: {
+          todos: updatedTodos
+        }
+      });
+
+      return { success: true };
+    },
+    toggleIsCompleted: (_, { id }, { cache }) => {
+      const { todos } = cache.readQuery({ query: GET_TODOS });
+
+      const updatedTodos = todos.map(
+        (todo) => (todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo)
+      );
+      console.log(updatedTodos);
+      cache.writeData({ data: { todos: updatedTodos } });
+
+      return { success: true };
     }
   }
 };

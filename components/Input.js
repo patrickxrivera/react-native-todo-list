@@ -35,6 +35,7 @@ export default class Input extends Component {
             value={this.state.text}
             placeholder="Enter a todo"
             onSubmitEditing={this.handleSubmit(addTodo)}
+            autoFocus
           />
         )}
       </Mutation>

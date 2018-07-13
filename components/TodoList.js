@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 import AppText from './shared/AppText';
 import { GET_TODOS } from '../graphql/queries';
+import { REMOVE_TODO, TOGGLE_IS_COMPLETED } from '../graphql/mutations';
 
 const ItemWrapper = styled.View`
   border-bottom-color: lightgrey;
@@ -43,8 +44,19 @@ const renderItem = ({ item }) => (
   <ItemWrapper>
     <AppText>{item.text}</AppText>
     <ActionWrapper>
-      <CheckBox containerStyle={styles.containerStyle} />
-      <RemoveIcon>X</RemoveIcon>
+      <Mutation mutation={TOGGLE_IS_COMPLETED} variables={{ id: item.id }}>
+        {(toggleIsCompleted) => (
+          <CheckBox
+            containerStyle={styles.containerStyle}
+            checked={item.isCompleted}
+            onPress={() => toggleIsCompleted()}
+          />
+        )}
+      </Mutation>
+
+      <Mutation mutation={REMOVE_TODO} variables={{ id: item.id }}>
+        {(removeTodo) => <RemoveIcon onPress={() => removeTodo()}>X</RemoveIcon>}
+      </Mutation>
     </ActionWrapper>
   </ItemWrapper>
 );
